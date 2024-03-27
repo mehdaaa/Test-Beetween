@@ -36,18 +36,15 @@ app.get("/updateJobs", (req, res) => {
         method: "GET",
 
     }).then(response => {
-            // Check if response is successful (status code in the range 200-299)
             if (!response.ok) {
                 console.log(response.status)
                 throw new Error('Network response was not ok');
             }
-            // Parse the JSON response asynchronously
             return response.json();
         })
-        .then(jobsData => {
-            // Send the jobs data to the frontend as JSON
-            job.saveJobs(jobsData);
-            res.json(jobsData);
+        .then(async jobsData => {
+            await job.saveJobs(jobsData);
+            res.status(200).send("Jobs updated");
         })
         .catch(error => {
             console.error("Error fetching data:", error);

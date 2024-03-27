@@ -41,9 +41,14 @@ function App() {
           "http://localhost:3001/updateJobs",
           requestOptions
       );
-      setTimeout(() => {
+
+      if (response.ok) {
+        await response.text();
         getJobs();
-      }, 2000)
+        console.log("Jobs updated successfully");
+      } else {
+        console.error("Failed to update jobs");
+      }
 
     } catch (error) {
       console.error(error);
