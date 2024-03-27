@@ -15,7 +15,6 @@ class JobsController {
 
             try {
                 await newJob.save();
-                console.log("Job saved");
             } catch (error) {
                 console.log("Error: " + error.message);
             }
@@ -24,8 +23,7 @@ class JobsController {
 
     async getJobs(){
         try {
-            const allJobs = await Job.distinct();
-            console.log("Jobs found : " + allJobs);
+            const allJobs = await Job.find();
             return allJobs;
         } catch (error) {
             return "Error fetching jobs : " + error.message;

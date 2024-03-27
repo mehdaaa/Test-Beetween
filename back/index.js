@@ -1,13 +1,14 @@
 import express from 'express';
 import fetch from 'node-fetch';
+import cors from 'cors'
 import dbConnect from "./config/db.js";
 import JobsController from "./JobsController.js";
+import Job from "./models/jobsModel.js";
 
 const app = express();
 const port = 3001;
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+
+app.use(cors());
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
@@ -18,9 +19,8 @@ dbConnect();
 
 let baseUrl = "https://labonnealternance-recette.apprentissage.beta.gouv.fr/api";
 
-app.get("/jobs", (req, res) => {
+app.get("/updateJobs", (req, res) => {
 
-    /*console.log(req.body);*/
     const endpoint = "/v1/jobs";
 
     const data = {
@@ -46,12 +46,23 @@ app.get("/jobs", (req, res) => {
         })
         .then(jobsData => {
             // Send the jobs data to the frontend as JSON
-            res.json(jobsData);
             job.saveJobs(jobsData);
+            res.json(jobsData);
         })
         .catch(error => {
             console.error("Error fetching data:", error);
             console.log(error);
             res.status(500).json({ error: "Error fetching data from API" });
         });
+});
+
+app.get("/getJobs", async (req, res) => {
+    try {
+        const data = await job.getJobs();
+        res.send(data);
+        console.log("Jobs sent successfully.");
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        res.status(500).json({ error: "Error fetching jobs from database" });
+    }
 });
