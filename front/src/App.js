@@ -43,7 +43,7 @@ function App() {
       );
       setTimeout(() => {
         getJobs();
-      }, 1000)
+      }, 2000)
 
     } catch (error) {
       console.error(error);
@@ -58,29 +58,10 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={() => updateJobs()}>Actualiser</button>
+        <button className="update-button" onClick={() => updateJobs()}>Actualiser</button>
       {jobs.length ? jobs.map((job) => (
           <Card key={job._id} company={job.company} city={job.city} address={job.address}/>
       )) : null }
-
-      {/*<table>
-        <thead>
-          <tr>
-            <th>Company</th>
-            <th>City</th>
-            <th>Address</th>
-          </tr>
-        </thead>
-        <tbody>
-        {jobs.length ? jobs.map((job) => (
-              <tr key={job._id}>
-                <th>{job.company}</th>
-                <th>{job.city}</th>
-                <th>{job.address}</th>
-              </tr>
-          )) : null }
-        </tbody>
-      </table>*/}
     </div>
   );
 }
